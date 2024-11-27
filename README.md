@@ -15,8 +15,14 @@ Usecases
 
 API:
 
-- Without data`*`: https://evaloncloud.com/eval?code=return%20Object.keys({a:1,b:2,c:3}).length
-- With data`**`: https://evaloncloud.com/eval?input=https://uithub.com/codefromanywhere/claudeflair&code=return%20Object.keys(data.files)
+- https://evaloncloud.com/CODE
+- https://evaloncloud.com/CODE-URL
+- https://evaloncloud.com/CODE?input=JSON-URL
+
+Examples:
+
+- Without data`*`: https://evaloncloud.com/return%20Object.keys({a:1,b:2,c:3}).length
+- With data`**`: https://evaloncloud.com/return%20Object.keys(data.files)?input=https://uithub.com/codefromanywhere/claudeflair
 
 `*` = the code can also be a URL resolving to a piece of JS
 

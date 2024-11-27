@@ -60,6 +60,7 @@
                 <!-- Results Section -->
                 <div class="mt-8">
                     <h3 class="text-lg font-medium text-gray-900">Results</h3>
+                    <div id="url" class="mt-2 p-4 bg-gray-50 rounded-md"></div>
                     <div id="results" class="mt-2 p-4 bg-gray-50 rounded-md">
                         <pre id="output" class="text-sm text-gray-700"></pre>
                     </div>
@@ -106,11 +107,12 @@
             const code = editor.getValue();
             const dataUrl = document.getElementById('dataUrl').value;
 
-            let url = `https://evaloncloud.com/eval?code=${encodeURIComponent(code)}`;
+            let url = `https://evaloncloud.com/${encodeURIComponent(code)}`;
             if (dataUrl) {
-                url += `&input=${encodeURIComponent(dataUrl)}`;
+                url += `?input=${encodeURIComponent(dataUrl)}`;
             }
 
+            document.getElementById("url").innerText = url;
             fetch(url)
                 .then(response => response.text())
                 .then(result => {

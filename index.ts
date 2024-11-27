@@ -39,8 +39,10 @@ const getCodeString = async (urlOrString: string) => {
 const serverResponse = async (event: FetchEvent) => {
   try {
     const url = new URL(event.request.url);
+    const code = decodeURIComponent(url.pathname);
+    console.log({ code });
     const input = url.searchParams.get("input");
-    const code = url.searchParams.get("code");
+
     if (!code) {
       return new Response(
         "Please provide ?code=URL&input=URL to run code with input.",
