@@ -19,6 +19,7 @@ API:
 - With data`**`: https://evaloncloud.com/eval?input=https://uithub.com/codefromanywhere/claudeflair&code=return%20Object.keys(data.files)
 
 `*` = the code can also be a URL resolving to a piece of JS
+
 `**` = when passing data, ensure the URL resolves with a JSON object
 
 Limitations:
