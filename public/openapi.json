@@ -1,0 +1,88 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "QuickJS Code Execution API",
+    "version": "1.0.0",
+    "description": "API for executing JavaScript code in a sandboxed QuickJS environment"
+  },
+  "servers": [
+    {
+      "url": "https://evaloncloud.com",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/{code}": {
+      "get": {
+        "summary": "Execute JavaScript code",
+        "description": "Executes provided JavaScript code with optional input data in a sandboxed QuickJS environment",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "URL-encoded JavaScript code or URL pointing to JavaScript code",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "input",
+            "in": "query",
+            "required": false,
+            "description": "URL pointing to JSON input data",
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully executed code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing code parameter",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Execution error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      }
+    }
+  }
+}

@@ -39,8 +39,8 @@ const getCodeString = async (urlOrString: string) => {
 const serverResponse = async (event: FetchEvent) => {
   try {
     const url = new URL(event.request.url);
-    const code = decodeURIComponent(url.pathname);
-    console.log({ code });
+    const code =
+      url.searchParams.get("code") || decodeURIComponent(url.pathname);
     const input = url.searchParams.get("input");
 
     if (!code) {
