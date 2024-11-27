@@ -6,5 +6,5 @@
 
 API:
 
-- Without data: https://evaloncloud.com/?code=return%20Object.keys({a:1,b:2,c:3}).length
-- With data: https://evaloncloud.com/?input=https://uithub.com/codefromanywhere/claudeflair&code=return%20Object.keys(data.files)
+- Without data: https://evaloncloud.com/eval?code=return%20Object.keys({a:1,b:2,c:3}).length
+- With data: https://evaloncloud.com/eval?input=https://uithub.com/codefromanywhere/claudeflair&code=return%20Object.keys(data.files)
