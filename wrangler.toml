@@ -2,6 +2,7 @@ name = "codefromanywhere_evaloncloud_main"
 main = "index.ts"
 compatibility_date = "2024-01-21"
 
-#routes = [
-#  { pattern = "evaloncloud.com", custom_domain = true }
-#]
+routes = [
+  { pattern = "evaloncloud.com", custom_domain = true },
+  { pattern = "www.evaloncloud.com", custom_domain = true }
+]

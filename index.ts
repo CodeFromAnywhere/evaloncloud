@@ -107,11 +107,19 @@ const serverResponse = async (event: FetchEvent) => {
     const result = vm.evalCode(
       `(()=>{
 
+        function tryParseData(raw){
+          try{
+          return JSON.parse(raw);
+          } catch(e){
+            return;
+          }
+        }
+
         function inputFn(data){
         ${codeString}
         }
 
-        const data = JSON.parse(raw);
+        const data = tryParseData(raw)
         const result = inputFn(data);
 
         return JSON.stringify(result,undefined,2);
@@ -121,7 +129,9 @@ const serverResponse = async (event: FetchEvent) => {
     const resolvedHandle = vm.unwrapResult(result);
     const final = vm.getString(resolvedHandle);
 
-    return new Response(JSON.stringify(final));
+    return new Response(final, {
+      headers: { "content-type": "application/json;charset=utf8" },
+    });
   } catch (e: any) {
     console.error(e);
     return new Response(`Something went wrong: ${e.message}`, { status: 500 });
