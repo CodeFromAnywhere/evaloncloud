@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "./copy-wasm-file-into-src.sh && npx wrangler dev"
+    "dev": "./copy-wasm-file-into-src.sh && npx wrangler@latest dev"
   },
   "keywords": [],
   "author": "",

@@ -16,7 +16,7 @@ const cloudflareVariant = newVariant(baseVariant, {
 
 let QuickJS: QuickJSWASMModule | undefined;
 
-addEventListener("fetch", async (event) => {
+addEventListener("fetch", (event) => {
   event.respondWith(serverResponse(event));
 });
 
@@ -64,35 +64,64 @@ const serverResponse = async (event: FetchEvent) => {
 
     QuickJS = await newQuickJSWASMModule(cloudflareVariant);
 
-    const runtime = QuickJS.newRuntime({
-      interruptHandler: shouldInterruptAfterDeadline(Date.now() + 60000),
-      maxStackSizeBytes: 0,
-      memoryLimitBytes: 1024 * 1024 * 100,
-    });
+    // const runtime = QuickJS.newRuntime({
+    //   interruptHandler: shouldInterruptAfterDeadline(Date.now() + 1000),
+    //   maxStackSizeBytes: 0,
+    //   memoryLimitBytes: 1024 * 1024 * 100, // * 100,
+    // });
 
-    const vm = runtime.newContext();
+    // const vm = runtime.newContext({});
 
+    // const rawHandle = vm.newString(inputString);
+    // rawHandle.consume((handle) => vm.setProp(vm.global, "raw", handle));
+
+    // // Eval code in a way that you always have access to "data" and must pass `return something`
+    // const result = vm.evalCode(
+    //   `(()=>{
+
+    //     function inputFn(data){
+    //     ${codeString}
+    //     }
+
+    //     const data = JSON.parse(raw);
+    //     const result = inputFn(data);
+
+    //     return JSON.stringify(result,undefined,2);
+    //   })()`,
+    // );
+
+    // const resolvedHandle = vm.unwrapResult(result);
+    // const final = vm.getString(resolvedHandle);
+
+    // return new Response(final, {
+    //   headers: { "content-type": "application/json;charset=utf8" },
+    // });
+
+    // simpler version
+
+    const vm = QuickJS.newContext({});
     const rawHandle = vm.newString(inputString);
     rawHandle.consume((handle) => vm.setProp(vm.global, "raw", handle));
 
     // Eval code in a way that you always have access to "data" and must pass `return something`
-    const result = vm.evalCode(`(()=>{
+    const result = vm.evalCode(
+      `(()=>{
 
-      function inputFn(data){
-      ${codeString}
-      }
+        function inputFn(data){
+        ${codeString}
+        }
 
-      const data = JSON.parse(raw);
+        const data = JSON.parse(raw);
+        const result = inputFn(data);
 
-      return JSON.stringify(inputFn(data),undefined,2);
-    })()`);
+        return JSON.stringify(result,undefined,2);
+      })()`,
+    );
 
     const resolvedHandle = vm.unwrapResult(result);
     const final = vm.getString(resolvedHandle);
 
-    return new Response(final, {
-      headers: { "content-type": "application/json;charset=utf8" },
-    });
+    return new Response(JSON.stringify(final));
   } catch (e: any) {
     console.error(e);
     return new Response(`Something went wrong: ${e.message}`, { status: 500 });
