@@ -6,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eval on Cloud - Simple JS Cloud Runtime API</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        canvas {
+            width: 100%;
+            height: 100vh;
+            display: block;
+        }
+
+        .title {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: #444;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            z-index: 100;
+        }
+    </style>
 </head>
 
 <body class="bg-slate-50 text-slate-900">
@@ -87,6 +104,215 @@ https://evaloncloud.com/code=return%20Object.keys(data.files)?input=https://api.
             e.preventDefault();
             window.location.href = '/demo';
         });
+    </script>
+
+    <div class="title">Say Hello To Evalon ⚡</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+    <script>
+        // Set up scene
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xf0f0f0);
+
+        // Camera
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        // Renderer
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Create materials
+        const furMaterial = new THREE.MeshPhongMaterial({
+            color: 0xFFD700, // Yellow color
+            specular: 0x111111,
+            shininess: 5
+        });
+        const bellyMaterial = new THREE.MeshPhongMaterial({
+            color: 0xFFF68F, // Lighter yellow for belly
+            specular: 0x111111,
+            shininess: 5
+        });
+        const noseMaterial = new THREE.MeshPhongMaterial({
+            color: 0x000000,
+            specular: 0x222222,
+            shininess: 30
+        });
+        const lightningMaterial = new THREE.MeshPhongMaterial({
+            color: 0x00FFFF,
+            emissive: 0x00FFFF,
+            emissiveIntensity: 0.5
+        });
+
+        // Body
+        const bodyGeometry = new THREE.SphereGeometry(1, 32, 32);
+        const body = new THREE.Mesh(bodyGeometry, furMaterial);
+        body.scale.y = 1.2;
+        scene.add(body);
+
+        // Belly
+        const bellyGeometry = new THREE.SphereGeometry(0.6, 32, 32);
+        const belly = new THREE.Mesh(bellyGeometry, bellyMaterial);
+        belly.position.z = 0.5;
+        belly.scale.y = 1.2;
+        body.add(belly);
+
+        // Head
+        const headGeometry = new THREE.SphereGeometry(0.6, 32, 32);
+        const head = new THREE.Mesh(headGeometry, furMaterial);
+        head.position.y = 1.2;
+        body.add(head);
+
+        // Eyes
+        const eyeGeometry = new THREE.SphereGeometry(0.08, 32, 32);
+        const leftEye = new THREE.Mesh(eyeGeometry, noseMaterial);
+        leftEye.position.set(0.2, 0.1, 0.5);
+        head.add(leftEye);
+
+        const rightEye = new THREE.Mesh(eyeGeometry, noseMaterial);
+        rightEye.position.set(-0.2, 0.1, 0.5);
+        head.add(rightEye);
+
+        // Grin
+        const smileGeometry = new THREE.TorusGeometry(0.2, 0.03, 16, 32, Math.PI);
+        const smile = new THREE.Mesh(smileGeometry, noseMaterial);
+        smile.position.set(0, -0.1, 0.5);
+        smile.rotation.x = Math.PI;
+        head.add(smile);
+
+        // Nose
+        const noseGeometry = new THREE.SphereGeometry(0.08, 32, 32);
+        const nose = new THREE.Mesh(noseGeometry, noseMaterial);
+        nose.position.z = 0.5;
+        head.add(nose);
+
+        // Ears
+        const earGeometry = new THREE.SphereGeometry(0.2, 32, 32);
+        const leftEar = new THREE.Mesh(earGeometry, furMaterial);
+        leftEar.position.set(0.4, 0.4, 0);
+        head.add(leftEar);
+
+        const rightEar = new THREE.Mesh(earGeometry, furMaterial);
+        rightEar.position.set(-0.4, 0.4, 0);
+        head.add(rightEar);
+
+        // Arms
+        const armGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.8, 32);
+        const leftArm = new THREE.Mesh(armGeometry, furMaterial);
+        leftArm.position.set(1, 0, 0);
+        leftArm.rotation.z = -Math.PI / 4;
+        body.add(leftArm);
+
+        const rightArm = new THREE.Mesh(armGeometry, furMaterial);
+        rightArm.position.set(-1, 0, 0);
+        rightArm.rotation.z = Math.PI / 4;
+        body.add(rightArm);
+
+        // Lightning Bolt
+        const lightningGroup = new THREE.Group();
+        const boltGeometry = new THREE.ConeGeometry(0.1, 0.4, 8);
+        const bolt = new THREE.Mesh(boltGeometry, lightningMaterial);
+        bolt.rotation.x = Math.PI;
+        lightningGroup.add(bolt);
+
+        const bolt2 = new THREE.Mesh(boltGeometry, lightningMaterial);
+        bolt2.position.y = -0.4;
+        bolt2.scale.y = 0.8;
+        lightningGroup.add(bolt2);
+
+        lightningGroup.position.set(1.2, 0.2, 0);
+        lightningGroup.rotation.z = Math.PI / 4;
+        body.add(lightningGroup);
+
+        // Legs
+        const legGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.7, 32);
+        const leftLeg = new THREE.Mesh(legGeometry, furMaterial);
+        leftLeg.position.set(0.4, -1.2, 0);
+        body.add(leftLeg);
+
+        const rightLeg = new THREE.Mesh(legGeometry, furMaterial);
+        rightLeg.position.set(-0.4, -1.2, 0);
+        body.add(rightLeg);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        // Physics variables
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let velocity = { x: 0, y: 0 };
+        const friction = 0.98;
+        const throwForce = 0.05;
+
+        // Mouse event handlers
+        function onMouseDown(event) {
+            isDragging = true;
+            previousMousePosition = {
+                x: event.clientX,
+                y: event.clientY
+            };
+            velocity = { x: 0, y: 0 };
+        }
+
+        function onMouseMove(event) {
+            if (!isDragging) return;
+
+            const deltaX = event.clientX - previousMousePosition.x;
+            const deltaY = event.clientY - previousMousePosition.y;
+
+            velocity.x = deltaX * throwForce;
+            velocity.y = -deltaY * throwForce;
+
+            body.rotation.y += deltaX * 0.01;
+            body.rotation.x += deltaY * 0.01;
+
+            previousMousePosition = {
+                x: event.clientX,
+                y: event.clientY
+            };
+        }
+
+        function onMouseUp() {
+            isDragging = false;
+        }
+
+        // Add event listeners
+        document.addEventListener('mousedown', onMouseDown);
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+
+        // Animation
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (!isDragging) {
+                body.rotation.y += velocity.x;
+                body.rotation.x += velocity.y;
+                velocity.x *= friction;
+                velocity.y *= friction;
+            }
+
+            // Make lightning bolt glow
+            lightningMaterial.emissiveIntensity = 0.5 + Math.sin(Date.now() * 0.005) * 0.3;
+
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', onWindowResize, false);
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        animate();
     </script>
 </body>
 
