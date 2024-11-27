@@ -32,3 +32,11 @@ Limitations:
 
 - Does seem to get out of memory pretty fast, much faster than a regular cloudflare worker
 - Very limited in what you can run
+
+## Ideas:
+
+# Search + Generate Code
+
+An API such as: https://evaloncloud.com/do/NL_Descriptor/from/URL that would use vector search + LLM for matching. If match, use that code. If no match, generate new code and use that, adding it to the vector.
+
+The input format matters though. Let's think about how I can ensure the right format is there before it applies the function. I feel like we need Myelin: a normalisation of any datastructure into a more generic format.

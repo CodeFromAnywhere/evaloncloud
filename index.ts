@@ -40,7 +40,7 @@ const serverResponse = async (event: FetchEvent) => {
   try {
     const url = new URL(event.request.url);
     const code =
-      url.searchParams.get("code") || decodeURIComponent(url.pathname);
+      url.searchParams.get("code") || decodeURIComponent(url.pathname.slice(1));
     const input = url.searchParams.get("input");
 
     if (!code) {
@@ -105,9 +105,7 @@ const serverResponse = async (event: FetchEvent) => {
     const rawHandle = vm.newString(inputString);
     rawHandle.consume((handle) => vm.setProp(vm.global, "raw", handle));
 
-    // Eval code in a way that you always have access to "data" and must pass `return something`
-    const result = vm.evalCode(
-      `(()=>{
+    const fullString = `(()=>{
 
         function tryParseData(raw){
           try{
@@ -117,16 +115,20 @@ const serverResponse = async (event: FetchEvent) => {
           }
         }
 
-        function inputFn(data){
-        ${codeString}
-        }
+function inputFn(data){
+
+${codeString}
+
+}
 
         const data = tryParseData(raw)
         const result = inputFn(data);
 
         return JSON.stringify(result,undefined,2);
-      })()`,
-    );
+      })()`;
+
+    // Eval code in a way that you always have access to "data" and must pass `return something`
+    const result = vm.evalCode(fullString);
 
     const resolvedHandle = vm.unwrapResult(result);
     const final = vm.getString(resolvedHandle);
