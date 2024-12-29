@@ -81,7 +81,6 @@ export default {
         status: evaluated.status,
       });
     } catch (e: any) {
-      ///
       console.error(e);
       return new Response(
         JSON.stringify({
