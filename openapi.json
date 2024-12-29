@@ -1,0 +1,163 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Code Execution API",
+    "description": "API for executing JavaScript code with array mapping functionality",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://test-deno-96-2cgrydzhqbd3.deno.dev",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "summary": "Execute code with array mapping context",
+        "description": "Executes provided JavaScript code in the context of array map operation with given item, index and array",
+        "operationId": "executeCode",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecuteCodeRequest"
+              },
+              "examples": {
+                "synchronous": {
+                  "value": {
+                    "code": "(n, index, array) => n * n",
+                    "item": 5,
+                    "index": 4,
+                    "array": [1, 2, 3, 4, 5]
+                  }
+                },
+                "asynchronous": {
+                  "value": {
+                    "code": "async (n, index, array) => { await new Promise(resolve => setTimeout(resolve, 1000)); return n * n; }",
+                    "item": 5,
+                    "index": 4,
+                    "array": [1, 2, 3, 4, 5]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Code executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                },
+                "example": {
+                  "status": 200,
+                  "result": 25
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": 400,
+                  "result": undefined,
+                  "error": "Missing required parameters"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error or code execution error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": 500,
+                  "result": undefined,
+                  "error": "Code execution failed"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ExecuteCodeRequest": {
+        "type": "object",
+        "required": ["code", "item", "index", "array"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "JavaScript code to execute (can be synchronous or async function)",
+            "example": "(n, index, array) => n * n"
+          },
+          "item": {
+            "description": "Current item being processed",
+            "example": 5
+          },
+          "index": {
+            "type": "number",
+            "description": "Index of current item in array",
+            "example": 4
+          },
+          "array": {
+            "type": "array",
+            "description": "Full array being processed",
+            "items": {
+              "type": "any"
+            },
+            "example": [1, 2, 3, 4, 5]
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "required": ["status", "result"],
+        "properties": {
+          "status": {
+            "type": "number",
+            "enum": [200],
+            "description": "HTTP status code"
+          },
+          "result": {
+            "description": "Result of code execution",
+            "example": 25
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": ["status", "result", "error"],
+        "properties": {
+          "status": {
+            "type": "number",
+            "enum": [400, 500],
+            "description": "HTTP status code"
+          },
+          "result": {
+            "type": "null",
+            "description": "Always null for error responses"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      }
+    }
+  }
+}

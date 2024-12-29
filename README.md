@@ -4,3 +4,5 @@ Previous eval experiments:
 
 - [v1 - Run untrusted code using QuickJS WASM on Cloudflare](https://github.com/codefromanywhere/evaloncloud-v1)
 - [v2 - Eval untrusted code from URL on Deno with caching](https://github.com/codefromanywhere/evaloncloud-v2)
+
+[Docs](https://codefromanywhere_evaloncloud.githuq.com/index.html)
