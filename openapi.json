@@ -69,7 +69,6 @@
                 },
                 "example": {
                   "status": 400,
-                  "result": undefined,
                   "error": "Missing required parameters"
                 }
               }
@@ -84,7 +83,6 @@
                 },
                 "example": {
                   "status": 500,
-                  "result": undefined,
                   "error": "Code execution failed"
                 }
               }
