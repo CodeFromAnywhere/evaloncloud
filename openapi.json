@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://test-deno-96-2cgrydzhqbd3.deno.dev",
+      "url": "https://evaloncloud.deno.dev",
       "description": "Production server"
     }
   ],
