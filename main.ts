@@ -44,12 +44,13 @@ export default {
       if (
         code === undefined ||
         item === undefined ||
-        index === undefined ||
-        array === undefined
+        index === undefined
+        //   || array === undefined
       ) {
         return new Response(
           JSON.stringify({
             status: 400,
+            error: "Please provide all parameters",
             result: undefined,
           }),
           { status: 400 },
@@ -69,7 +70,7 @@ export default {
     return {
       status: err.cause || 500,
       result: undefined,
-      error: err.message
+      error: 'evaloncloud-inner='+err.message
     };
   }
 })()`;
@@ -85,7 +86,7 @@ export default {
       return new Response(
         JSON.stringify({
           status: e.cause || 500,
-          error: e.message,
+          error: `Evaloncloud:${e.message}`,
           result: undefined,
         }),
         { status: e.cause || 500 },
